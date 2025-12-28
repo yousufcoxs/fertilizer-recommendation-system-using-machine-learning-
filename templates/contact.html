@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact - Fertilizer Recommender</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f7fa;
+      color: #333;
+    }
+
+    header {
+      width: 100%;
+      background: linear-gradient(135deg, #2d3436 0%, #16a085 100%);
+      color: white;
+      padding: 30px 0;
+      text-align: center;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      font-size: 1.8em;
+      margin: 0;
+      padding: 0;
+    }
+
+    .marquee {
+      white-space: nowrap;
+      overflow: hidden;
+      box-sizing: border-box;
+      animation: marquee 15s linear infinite;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 999;
+      top: 0;
+      left: 0;
+      background: linear-gradient(180deg, #2d3436 0%, #16a085 100%);
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 60px;
+    }
+
+    .sidebar a {
+      padding: 15px 25px;
+      text-decoration: none;
+      font-size: 1.1em;
+      color: white;
+      display: block;
+      transition: 0.2s;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar a:hover {
+      background-color: rgba(255,255,255,0.1);
+      padding-left: 30px;
+    }
+
+    .closebtn {
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      font-size: 2em;
+      color: white;
+      transition: 0.3s;
+    }
+
+    .closebtn:hover {
+      transform: rotate(90deg);
+    }
+
+    .menu-icon {
+      font-size: 2em;
+      cursor: pointer;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: white;
+      z-index: 1000;
+      transition: 0.3s;
+    }
+
+    .menu-icon:hover {
+      transform: scale(1.1);
+    }
+
+    .main-content {
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Contact Page Specific Styles */
+    .contact-header {
+      text-align: center;
+      margin: 40px 0;
+    }
+
+    .contact-header h2 {
+      font-size: 2.5em;
+      color: #2c3e50;
+      margin-bottom: 20px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .contact-header h2::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 4px;
+      background-color: #1abc9c;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    .contact-header p {
+      color: #555;
+      font-size: 1.1em;
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .contact-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      margin: 60px 0;
+    }
+
+    .contact-info {
+      flex: 1;
+      min-width: 300px;
+      background: white;
+      border-radius: 15px;
+      padding: 40px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+
+    .contact-info h3 {
+      color: #2c3e50;
+      font-size: 1.8em;
+      margin-bottom: 30px;
+      position: relative;
+    }
+
+    .contact-info h3::after {
+      content: '';
+      position: absolute;
+      width: 50px;
+      height: 3px;
+      background-color: #1abc9c;
+      bottom: -10px;
+      left: 0;
+      border-radius: 2px;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 25px;
+    }
+
+    .info-icon {
+      font-size: 1.5em;
+      color: #1abc9c;
+      margin-right: 20px;
+      width: 30px;
+      text-align: center;
+    }
+
+    .info-content h4 {
+      color: #2c3e50;
+      margin-bottom: 5px;
+      font-size: 1.2em;
+    }
+
+    .info-content p, .info-content a {
+      color: #555;
+      text-decoration: none;
+      line-height: 1.6;
+    }
+
+    .info-content a:hover {
+      color: #1abc9c;
+    }
+
+    .contact-form {
+      flex: 1;
+      min-width: 300px;
+      background: white;
+      border-radius: 15px;
+      padding: 40px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+
+    .contact-form h3 {
+      color: #2c3e50;
+      font-size: 1.8em;
+      margin-bottom: 30px;
+      position: relative;
+    }
+
+    .contact-form h3::after {
+      content: '';
+      position: absolute;
+      width: 50px;
+      height: 3px;
+      background-color: #1abc9c;
+      bottom: -10px;
+      left: 0;
+      border-radius: 2px;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #2c3e50;
+    }
+
+    .form-group input, 
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1em;
+      transition: all 0.3s ease;
+    }
+
+    .form-group textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .form-group input:focus, 
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: #1abc9c;
+      box-shadow: 0 0 0 3px rgba(26, 188, 156, 0.2);
+      outline: none;
+    }
+
+    .submit-btn {
+      background-color: #1abc9c;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      font-size: 1.1em;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .submit-btn:hover {
+      background-color: #16a085;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(26, 188, 156, 0.3);
+    }
+
+    .map-container {
+      margin: 60px 0;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      height: 400px;
+    }
+
+    .map-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .contact-container {
+        flex-direction: column;
+      }
+      
+      .map-container {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1><span class="marquee">🌱 Smart Fertilizer Recommendation Using Machine Learning 🌾</span></h1>
+  </header>
+
+  <!-- Sidebar -->
+  <div id="sidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">&times;</a>
+    <a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Home</a>
+    <a href="{{ url_for('services') }}"><i class="fas fa-cogs"></i> Services</a>
+    <a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About</a>
+    <a href="{{ url_for('fermar_portal') }}"><i class="fas fa-user"></i> Farmer Portal</a>
+    <a href="{{ url_for('resources') }}"><i class="fas fa-book"></i> Resources</a>
+    <a href="{{ url_for('contact') }}"><i class="fas fa-phone"></i> Contact</a>
+  </div>
+
+  <!-- Menu Icon -->
+  <span class="menu-icon" onclick="openSidebar()">&#9776;</span>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Contact Header -->
+    <section class="contact-header">
+      <h2>Get In Touch With Us</h2>
+      <p>Have questions about our fertilizer recommendation system? Our team is here to help you optimize your agricultural productivity. Reach out to us through any of the channels below.</p>
+    </section>
+
+    <!-- Contact Container -->
+    <section class="contact-container">
+      <!-- Contact Information -->
+      <div class="contact-info">
+        <h3>Contact Information</h3>
+        
+        <div class="info-item">
+          <div class="info-icon">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <div class="info-content">
+            <h4>Our Office</h4>
+            <p>Agricultural Technology Park<br>Block B, Sector 62<br>Noida, Uttar Pradesh 201309</p>
+          </div>
+        </div>
+        
+        <div class="info-item">
+          <div class="info-icon">
+            <i class="fas fa-phone-alt"></i>
+          </div>
+          <div class="info-content">
+            <h4>Phone</h4>
+            <p><a href="tel:+88 01866466682">+88 01866466682</a><br>
+            <a href="tel:+88 01704817142">+88 01704817142</a></p>
+          </div>
+        </div>
+        
+        <div class="info-item">
+          <div class="info-icon">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <div class="info-content">
+            <h4>Email</h4>
+            <p><a href="mailto:221002481@student.green.edu.bd">221002481@student.green.edu.bd</a><br>
+            <a href="mailto:mdyousufbappy96@gmail.com">mdyousufbappy96@gmail.com</a></p>
+          </div>
+        </div>
+        
+        <div class="info-item">
+          <div class="info-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="info-content">
+            <h4>Working Hours</h4>
+            <p>Monday - Friday: 9:00 AM - 6:00 PM<br>
+            Saturday: 10:00 AM - 4:00 PM<br>
+            Sunday: Closed</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="contact-form">
+        <h3>Send Us a Message</h3>
+        <form id="contactForm" method="POST">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone">
+          </div>
+          
+          <div class="form-group">
+            <label for="subject">Subject</label>
+            <select id="subject" name="subject">
+              <option value="general">General Inquiry</option>
+              <option value="technical">Technical Support</option>
+              <option value="partnership">Partnership Opportunity</option>
+              <option value="feedback">Feedback/Suggestions</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="message">Your Message</label>
+            <textarea id="message" name="message" required></textarea>
+          </div>
+          
+          <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="map-container">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3506.2233913125413!2d77.36731641508022!3d28.502889982469462!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce626851f7009%3A0x621185133cfd1ad1!2sSector%2062%2C%20Noida%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+    </section>
+  </div>
+
+  <script>
+    // Sidebar functions
+    function openSidebar() {
+      document.getElementById("sidebar").style.width = "280px";
+    }
+
+    function closeSidebar() {
+      document.getElementById("sidebar").style.width = "0";
+    }
+    
+    // Close sidebar when clicking outside
+    document.addEventListener('click', function(event) {
+      const sidebar = document.getElementById('sidebar');
+      const menuIcon = document.querySelector('.menu-icon');
+      
+      if (!sidebar.contains(event.target) && event.target !== menuIcon && !menuIcon.contains(event.target)) {
+        sidebar.style.width = "0";
+      }
+    });
+
+    // Form submission handling
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Here you would normally send the form data to your server
+      alert('Thank you for your message! We will get back to you soon.');
+      this.reset();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Services - Fertilizer Recommender</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f7fa;
+      color: #333;
+    }
+
+    header {
+      width: 100%;
+      background: linear-gradient(135deg, #2d3436 0%, #16a085 100%);
+      color: white;
+      padding: 30px 0;
+      text-align: center;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      font-size: 1.8em;
+      margin: 0;
+      padding: 0;
+    }
+
+    .marquee {
+      white-space: nowrap;
+      overflow: hidden;
+      box-sizing: border-box;
+      animation: marquee 15s linear infinite;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 999;
+      top: 0;
+      left: 0;
+      background: linear-gradient(180deg, #2d3436 0%, #16a085 100%);
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 60px;
+    }
+
+    .sidebar a {
+      padding: 15px 25px;
+      text-decoration: none;
+      font-size: 1.1em;
+      color: white;
+      display: block;
+      transition: 0.2s;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar a:hover {
+      background-color: rgba(255,255,255,0.1);
+      padding-left: 30px;
+    }
+
+    .closebtn {
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      font-size: 2em;
+      color: white;
+      transition: 0.3s;
+    }
+
+    .closebtn:hover {
+      transform: rotate(90deg);
+    }
+
+    .menu-icon {
+      font-size: 2em;
+      cursor: pointer;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: white;
+      z-index: 1000;
+      transition: 0.3s;
+    }
+
+    .menu-icon:hover {
+      transform: scale(1.1);
+    }
+
+    .services-section {
+      padding: 80px 20px;
+      text-align: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .services-section h2 {
+      font-size: 2.5em;
+      margin-bottom: 50px;
+      color: #2c3e50;
+      position: relative;
+      display: inline-block;
+    }
+
+    .services-section h2::after {
+      content: '';
+      position: absolute;
+      width: 50%;
+      height: 4px;
+      background: linear-gradient(90deg, #16a085, #2d3436);
+      bottom: -10px;
+      left: 25%;
+      border-radius: 2px;
+    }
+
+    .service-cards {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+
+    .card {
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      width: 300px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, #16a085, #2d3436);
+    }
+
+    .card h3 {
+      font-size: 1.5em;
+      color: #2c3e50;
+      margin-bottom: 15px;
+    }
+
+    .card p {
+      font-size: 1em;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .icon {
+      font-size: 50px;
+      margin-bottom: 20px;
+      color: #16a085;
+      transition: 0.3s;
+    }
+
+    .card:hover .icon {
+      transform: scale(1.1);
+    }
+
+    .learn-more {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 8px 20px;
+      background: linear-gradient(90deg, #16a085, #2d3436);
+      color: white;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    .learn-more:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(22, 160, 133, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      .service-cards {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .services-section h2 {
+        font-size: 2em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1><span class="marquee">🌱 Smart Fertilizer Recommendation Using Machine Learning 🌾</span></h1>
+  </header>
+
+  <!-- Sidebar -->
+  <div id="sidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">&times;</a>
+    <a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Home</a>
+    <a href="{{ url_for('services') }}"><i class="fas fa-cogs"></i> Services</a>
+    <a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About</a>
+    <a href="{{ url_for('fermar_portal') }}"><i class="fas fa-user"></i> Farmer Portal</a>
+    <a href="{{ url_for('resources') }}"><i class="fas fa-book"></i> Resources</a>
+    <a href="{{ url_for('contact') }}"><i class="fas fa-phone"></i> Contact</a>
+  </div>
+
+  <!-- Menu Icon -->
+  <span class="menu-icon" onclick="openSidebar()">&#9776;</span>
+
+  <!-- Services Section -->
+  <section class="services-section">
+    <h2>Our Premium Services for Farmers</h2>
+    <div class="service-cards">
+
+      <div class="card">
+        <div class="icon"><i class="fas fa-seedling"></i></div>
+        <h3>Fertilizer Recommendation</h3>
+        <p>Get AI-powered fertilizer suggestions tailored to your specific soil conditions, crop type, and environmental factors for optimal growth.</p>
+        <a href="#" class="learn-more">Learn More</a>
+      </div>
+
+      <div class="card">
+        <div class="icon"><i class="fas fa-leaf"></i></div>
+        <h3>Crop Recommendation</h3>
+        <p>Our advanced algorithm suggests the most profitable crops based on soil analysis, weather patterns, and market demand.</p>
+        <a href="#" class="learn-more">Learn More</a>
+      </div>
+
+      <div class="card">
+        <div class="icon"><i class="fas fa-chart-line"></i></div>
+        <h3>Soil Health Monitoring</h3>
+        <p>Continuous soil analysis with detailed reports on nutrient levels, pH balance, and organic matter content.</p>
+        <a href="#" class="learn-more">Learn More</a>
+      </div>
+
+      <div class="card">
+        <div class="icon"><i class="fas fa-cloud-sun-rain"></i></div>
+        <h3>Weather Forecasting</h3>
+        <p>Hyper-local weather predictions tailored to your farm's location with irrigation recommendations.</p>
+        <a href="#" class="learn-more">Learn More</a>
+      </div>
+
+      <div class="card">
+        <div class="icon"><i class="fas fa-tint"></i></div>
+        <h3>Irrigation Planning</h3>
+        <p>Smart water management system that calculates optimal irrigation schedules based on soil moisture and weather.</p>
+        <a href="#" class="learn-more">Learn More</a>
+      </div>
+
+      <div class="card">
+        <div class="icon"><i class="fas fa-shopping-basket"></i></div>
+        <h3>Market Connect</h3>
+        <p>Direct access to buyers and real-time market prices to help you get the best value for your produce.</p>
+        <a href="#" class="learn-more">Learn More</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Sidebar Script -->
+  <script>
+    function openSidebar() {
+      document.getElementById("sidebar").style.width = "280px";
+    }
+
+    function closeSidebar() {
+      document.getElementById("sidebar").style.width = "0";
+    }
+    
+    // Close sidebar when clicking outside
+    document.addEventListener('click', function(event) {
+      const sidebar = document.getElementById('sidebar');
+      const menuIcon = document.querySelector('.menu-icon');
+      
+      if (!sidebar.contains(event.target) && event.target !== menuIcon) {
+        sidebar.style.width = "0";
+      }
+    });
+  </script>
+
+</body>
+</html>

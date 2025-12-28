@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Resources - Fertilizer Recommender</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f7fa;
+      color: #333;
+    }
+
+    header {
+      width: 100%;
+      background: linear-gradient(135deg, #2d3436 0%, #16a085 100%);
+      color: white;
+      padding: 30px 0;
+      text-align: center;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      font-size: 1.8em;
+      margin: 0;
+      padding: 0;
+    }
+
+    .marquee {
+      white-space: nowrap;
+      overflow: hidden;
+      box-sizing: border-box;
+      animation: marquee 15s linear infinite;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 999;
+      top: 0;
+      left: 0;
+      background: linear-gradient(180deg, #2d3436 0%, #16a085 100%);
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 60px;
+    }
+
+    .sidebar a {
+      padding: 15px 25px;
+      text-decoration: none;
+      font-size: 1.1em;
+      color: white;
+      display: block;
+      transition: 0.2s;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar a:hover {
+      background-color: rgba(255,255,255,0.1);
+      padding-left: 30px;
+    }
+
+    .closebtn {
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      font-size: 2em;
+      color: white;
+      transition: 0.3s;
+    }
+
+    .closebtn:hover {
+      transform: rotate(90deg);
+    }
+
+    .menu-icon {
+      font-size: 2em;
+      cursor: pointer;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: white;
+      z-index: 1000;
+      transition: 0.3s;
+    }
+
+    .menu-icon:hover {
+      transform: scale(1.1);
+    }
+
+    .main-content {
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Resources Page Specific Styles */
+    .resources-header {
+      text-align: center;
+      margin: 40px 0;
+    }
+
+    .resources-header h2 {
+      font-size: 2.5em;
+      color: #2c3e50;
+      margin-bottom: 20px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .resources-header h2::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 4px;
+      background-color: #1abc9c;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    .resources-header p {
+      color: #555;
+      font-size: 1.1em;
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .resources-categories {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin: 60px 0;
+    }
+
+    .category-card {
+      flex: 1;
+      min-width: 300px;
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .category-card:hover {
+      transform: translateY(-10px);
+    }
+
+    .category-header {
+      background: linear-gradient(135deg, #2d3436 0%, #16a085 100%);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .category-header i {
+      font-size: 2.5em;
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    .category-header h3 {
+      margin: 0;
+      font-size: 1.5em;
+    }
+
+    .resource-list {
+      padding: 20px;
+    }
+
+    .resource-item {
+      padding: 15px 0;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      align-items: center;
+    }
+
+    .resource-item:last-child {
+      border-bottom: none;
+    }
+
+    .resource-icon {
+      color: #1abc9c;
+      font-size: 1.2em;
+      margin-right: 15px;
+    }
+
+    .resource-content a {
+      color: #2c3e50;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .resource-content a:hover {
+      color: #1abc9c;
+    }
+
+    .resource-content p {
+      color: #777;
+      font-size: 0.9em;
+      margin-top: 5px;
+    }
+
+    .download-btn {
+      background-color: #1abc9c;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.9em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-block;
+      margin-top: 10px;
+    }
+
+    .download-btn:hover {
+      background-color: #16a085;
+      transform: translateY(-2px);
+      box-shadow: 0 3px 10px rgba(26, 188, 156, 0.3);
+    }
+
+    .video-section {
+      margin: 60px 0;
+    }
+
+    .video-section h2 {
+      text-align: center;
+      font-size: 2em;
+      color: #2c3e50;
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    .video-section h2::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 4px;
+      background-color: #1abc9c;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 30px;
+    }
+
+    .video-card {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      height: 0;
+      overflow: hidden;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .video-info {
+      padding: 20px;
+    }
+
+    .video-info h3 {
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+
+    .video-info p {
+      color: #555;
+      line-height: 1.6;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .resources-categories {
+        flex-direction: column;
+      }
+      
+      .video-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1><span class="marquee">🌱 Smart Fertilizer Recommendation Using Machine Learning 🌾</span></h1>
+  </header>
+
+  <!-- Sidebar -->
+  <div id="sidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">&times;</a>
+    <a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Home</a>
+    <a href="{{ url_for('services') }}"><i class="fas fa-cogs"></i> Services</a>
+    <a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About</a>
+    <a href="{{ url_for('fermar_portal') }}"><i class="fas fa-user"></i> Farmer Portal</a>
+    <a href="{{ url_for('resources') }}"><i class="fas fa-book"></i> Resources</a>
+    <a href="{{ url_for('contact') }}"><i class="fas fa-phone"></i> Contact</a>
+  </div>
+
+  <!-- Menu Icon -->
+  <span class="menu-icon" onclick="openSidebar()">&#9776;</span>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Resources Header -->
+    <section class="resources-header">
+      <h2>Agricultural Resources Center</h2>
+      <p>Access our collection of guides, research papers, and educational materials to enhance your farming knowledge and optimize fertilizer usage for better crop yields.</p>
+    </section>
+
+    <!-- Resources Categories -->
+    <section class="resources-categories">
+      <div class="category-card">
+        <div class="category-header">
+          <i class="fas fa-file-pdf"></i>
+          <h3>Guides & Manuals</h3>
+        </div>
+        <div class="resource-list">
+          <div class="resource-item">
+            <div class="resource-icon">
+              <i class="fas fa-book-open"></i>
+            </div>
+            <div class="resource-content">
+              <a href="#">Fertilizer Application Handbook</a>
+              <p>Complete guide to proper fertilizer application techniques</p>
+              <a href="#" class="download-btn">Download PDF</a>
+            </div>
+          </div>
+          <div class="resource-item">
+            <div class="resource-icon">
+              <i class="fas fa-seedling"></i>
+            </div>
+            <div class="resource-content">
+              <a href="#">Organic Farming Practices</a>
+              <p>Transitioning to organic fertilizer methods</p>
+              <a href="#" class="download-btn">Download PDF</a>
+            </div>
+          </div>
+          <div class="resource-item">
+            <div class="resource-icon">
+              <i class="fas fa-tint"></i>
+            </div>
+            <div class="resource-content">
+              <a href="#">Soil Moisture Management</a>
+              <p>Optimizing water and nutrient retention</p>
+              <a href="#" class="download-btn">Download PDF</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <div class="category-header">
+          <i class="fas fa-chart-bar"></i>
+          <h3>Research Papers</h3>
+        </div>
+        <div class="resource-list">
+          <div class="resource-item">
+            <div class="resource-icon">
+              <i class="fas fa-flask"></i>
+            </div>
+            <div class="resource-content">
+              <a href="#">AI in Precision Agriculture</a>
+              <p>Latest research on machine learning applications</p>
+              <a href="#" class="download-btn">Download PDF</a>
+            </div>
+          </div>
+          <div class="resource-item">
+            <div class="resource-icon">
+              <i class="fas fa-leaf"></i>
+            </div>
+            <div class="resource-content">
+              <a href="#">Nutrient Uptake Efficiency</a>
+              <p>Study on crop-specific fertilizer absorption</p>
+              <a href="#" class="download-btn">Download PDF</a>
+            </div>
+          </div>
+          <div class="resource-item">
+            <div class="resource-icon">
+              <i class="fas fa-microscope"></i>
+            </div>
+            <div class="resource-content">
+              <a href="#">Soil Health Indicators</a>
+              <p>Scientific assessment of soil quality parameters</p>
+              <a href="#" class="download-btn">Download PDF</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <div class="category-header">
+          <i class="fas fa-calendar-alt"></i>
+          <h3>Seasonal Tips</h3>
+        </div>
+        <div class="resource-list">
+          <div class="resource-item">
+            <div class="resource-icon">
+              <i class="fas fa-sun"></i>
+            </div>
+            <div class="resource-content">
+              <a href="#">Summer Crop Fertilization</a>
+              <p>Managing nutrients in high-temperature conditions</p>
+              <a href="#" class="download-btn">Download PDF</a>
+            </div>
+          </div>
+          <div class="resource-item">
+            <div class="resource-icon">
+              <i class="fas fa-cloud-rain"></i>
+            </div>
+            <div class="resource-content">
+              <a href="#">Monsoon Season Guide</a>
+              <p>Preventing nutrient leaching during heavy rains</p>
+              <a href="#" class="download-btn">Download PDF</a>
+            </div>
+          </div>
+          <div class="resource-item">
+            <div class="resource-icon">
+              <i class="fas fa-snowflake"></i>
+            </div>
+            <div class="resource-content">
+              <a href="#">Winter Crop Preparation</a>
+              <p>Soil amendment strategies for cold weather</p>
+              <a href="#" class="download-btn">Download PDF</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Video Tutorials Section -->
+    <section class="video-section">
+      <h2>Video Tutorials</h2>
+      <div class="video-grid">
+        <div class="video-card">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/VIDEO_ID_1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-info">
+            <h3>How to Test Your Soil</h3>
+            <p>Step-by-step guide to conducting basic soil tests at your farm</p>
+          </div>
+        </div>
+        <div class="video-card">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/VIDEO_ID_2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-info">
+            <h3>Fertilizer Application Techniques</h3>
+            <p>Proper methods for applying different types of fertilizers</p>
+          </div>
+        </div>
+        <div class="video-card">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/VIDEO_ID_3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-info">
+            <h3>Understanding NPK Ratios</h3>
+            <p>How to interpret fertilizer labels for optimal crop nutrition</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Sidebar functions
+    function openSidebar() {
+      document.getElementById("sidebar").style.width = "280px";
+    }
+
+    function closeSidebar() {
+      document.getElementById("sidebar").style.width = "0";
+    }
+    
+    // Close sidebar when clicking outside
+    document.addEventListener('click', function(event) {
+      const sidebar = document.getElementById('sidebar');
+      const menuIcon = document.querySelector('.menu-icon');
+      
+      if (!sidebar.contains(event.target) && event.target !== menuIcon && !menuIcon.contains(event.target)) {
+        sidebar.style.width = "0";
+      }
+    });
+  </script>
+</body>
+</html>

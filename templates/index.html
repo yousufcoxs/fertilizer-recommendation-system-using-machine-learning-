@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home - Fertilizer Recommender</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f7fa;
+      color: #333;
+    }
+
+    header {
+      width: 100%;
+      background: linear-gradient(135deg, #2d3436 0%, #16a085 100%);
+      color: white;
+      padding: 30px 0;
+      text-align: center;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      font-size: 1.8em;
+      margin: 0;
+      padding: 0;
+    }
+
+    .marquee {
+      white-space: nowrap;
+      overflow: hidden;
+      box-sizing: border-box;
+      animation: marquee 15s linear infinite;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 999;
+      top: 0;
+      left: 0;
+      background: linear-gradient(180deg, #2d3436 0%, #16a085 100%);
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 60px;
+    }
+
+    .sidebar a {
+      padding: 15px 25px;
+      text-decoration: none;
+      font-size: 1.1em;
+      color: white;
+      display: block;
+      transition: 0.2s;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar a:hover {
+      background-color: rgba(255,255,255,0.1);
+      padding-left: 30px;
+    }
+
+    .closebtn {
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      font-size: 2em;
+      color: white;
+      transition: 0.3s;
+    }
+
+    .closebtn:hover {
+      transform: rotate(90deg);
+    }
+
+    .menu-icon {
+      font-size: 2em;
+      cursor: pointer;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: white;
+      z-index: 1000;
+      transition: 0.3s;
+    }
+
+    .menu-icon:hover {
+      transform: scale(1.1);
+    }
+
+    .main-content {
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Hero Section */
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+
+    .hero-text {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .hero-text h2 {
+      font-size: 2.5em;
+      color: #2c3e50;
+      margin-bottom: 20px;
+      line-height: 1.3;
+    }
+
+    .hero-text p {
+      color: #555;
+      font-size: 1.1em;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    /* Hero Slider Styles */
+    .hero-slider-container {
+      flex: 1;
+      min-width: 300px;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .hero-slider {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .hero-slide {
+      min-width: 100%;
+    }
+
+    .hero-slide img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .hero-slider-container:hover .hero-slide img {
+      transform: scale(1.05);
+    }
+
+    .hero-slider-nav {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      text-align: center;
+    }
+
+    .hero-slider-dot {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 50%;
+      margin: 0 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .hero-slider-dot.active {
+      background: white;
+    }
+
+    /* Form Section */
+    .form-section {
+      background: white;
+      border-radius: 15px;
+      padding: 40px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      margin-bottom: 60px;
+    }
+
+    .form-section h2 {
+      font-size: 2em;
+      color: #2c3e50;
+      margin-bottom: 30px;
+      text-align: center;
+      position: relative;
+    }
+
+    .form-section h2::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 4px;
+      background-color: #1abc9c;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #2c3e50;
+    }
+
+    .form-group input, 
+    .form-group select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1em;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus, 
+    .form-group select:focus {
+      border-color: #1abc9c;
+      box-shadow: 0 0 0 3px rgba(26, 188, 156, 0.2);
+      outline: none;
+    }
+
+    .submit-btn, .btn {
+      background-color: #1abc9c;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      font-size: 1.1em;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: block;
+      margin: 40px auto 0;
+    }
+
+    .submit-btn:hover, .btn:hover {
+      background-color: #16a085;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(26, 188, 156, 0.3);
+    }
+
+    .result-box {
+      background-color: #e8f8f5;
+      border-left: 4px solid #1abc9c;
+      padding: 15px 20px;
+      margin-top: 20px;
+      border-radius: 4px;
+      font-size: 1.2em;
+      text-align: center;
+    }
+
+    /* Image Slider */
+    .slider-section {
+      margin-bottom: 60px;
+    }
+
+    .slider-section h2 {
+      font-size: 2em;
+      color: #2c3e50;
+      margin-bottom: 30px;
+      text-align: center;
+      position: relative;
+    }
+
+    .slider-section h2::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 4px;
+      background-color: #1abc9c;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    .slider-container {
+      position: relative;
+      max-width: 100%;
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .slider {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .slide {
+      min-width: 100%;
+      position: relative;
+    }
+
+    .slide img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .slide-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .slider-nav {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .slider-dot {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      background: #ddd;
+      border-radius: 50%;
+      margin: 0 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .slider-dot.active {
+      background: #1abc9c;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-text h2 {
+        font-size: 2em;
+      }
+      
+      .form-section {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1><span class="marquee">🌱 Smart Fertilizer Recommendation Using Machine Learning 🌾</span></h1>
+  </header>
+
+  <!-- Sidebar -->
+  <div id="sidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">&times;</a>
+    <a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Home</a>
+    <a href="{{ url_for('services') }}"><i class="fas fa-cogs"></i> Services</a>
+    <a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About</a>
+    <a href="{{ url_for('fermar_portal') }}"><i class="fas fa-user"></i> Farmer Portal</a>
+    <a href="{{ url_for('resources') }}"><i class="fas fa-book"></i> Resources</a>
+    <a href="{{ url_for('contact') }}"><i class="fas fa-phone"></i> Contact</a>
+  </div>
+
+  <!-- Menu Icon -->
+  <span class="menu-icon" onclick="openSidebar()">&#9776;</span>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-text">
+        <h2>Optimize Your Crop Yield With AI-Powered Fertilizer Recommendations</h2>
+        <p>Our advanced machine learning system analyzes your soil conditions, crop type, and environmental factors to provide personalized fertilizer recommendations that maximize your yield while minimizing costs.</p>
+        <a href="#recommender-form" class="submit-btn">Get Recommendation Now</a>
+      </div>
+      <div class="hero-slider-container">
+        <div class="hero-slider" id="hero-slider">
+          <div class="hero-slide">
+            <img src="https://cdn.mos.cms.futurecdn.net/H3AQBzstniwy79houvv2Jn.jpg" alt="Farm field with crops">
+          </div>
+          <div class="hero-slide">
+            <img src="https://humicfactory.com/assets/images/blogs/1736169650107webp.webp" alt="Farm field">
+          </div>
+          <div class="hero-slide">
+            <img src="https://terra-droneagri.com/wp-content/uploads/2024/03/fertilizer.jpeg" alt="Farmer working">
+          </div>
+        </div>
+        <div class="hero-slider-nav" id="hero-slider-nav">
+          <span class="hero-slider-dot active"></span>
+          <span class="hero-slider-dot"></span>
+          <span class="hero-slider-dot"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recommender Form -->
+    <section class="form-section" id="recommender-form">
+      <h2>Fertilizer Recommendation Form</h2>
+      <form method="POST">
+        <div class="form-group">
+          <label class="icon-label">🌡️ Temperature (°C)</label>
+          <input type="number" step="any" name="temp" required>
+        </div>
+        <div class="form-group">
+          <label class="icon-label">💧 Moisture</label>
+          <input type="number" step="any" name="moist" required>
+        </div>
+        <div class="form-group">
+          <label class="icon-label">🌧️ Rainfall (mm)</label>
+          <input type="number" step="any" name="rain" required>
+        </div>
+        <div class="form-group">
+          <label class="icon-label">🧪 PH</label>
+          <input type="number" step="any" name="ph" required>
+        </div>
+        <div class="form-group">
+          <label class="icon-label">🟨 Nitrogen (N)</label>
+          <input type="number" step="any" name="n" required>
+        </div>
+        <div class="form-group">
+          <label class="icon-label">🟦 Phosphorous (P)</label>
+          <input type="number" step="any" name="p" required>
+        </div>
+        <div class="form-group">
+          <label class="icon-label">🟥 Potassium (K)</label>
+          <input type="number" step="any" name="k" required>
+        </div>
+        <div class="form-group">
+          <label class="icon-label">🟢 Carbon (%)</label>
+          <input type="number" step="any" name="c" required>
+        </div>
+        <div class="form-group">
+          <label class="icon-label">🧱 Soil Type</label>
+          <select name="soil">
+            {% for s in soils %}
+            <option value="{{ s }}">{{ s }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+           <label class="icon-label">🌾 Crop Type</label>
+          <select name="crop">
+            {% for c in crops %}
+            <option value="{{ c }}">{{ c }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <button type="submit" class="btn">Show Result</button>
+      </form>
+      {% if prediction %}
+      <div class="result-box">
+        🌟 Recommended Fertilizer: {{ prediction }}
+      </div>
+      {% endif %}
+    </section>
+
+    <!-- Image Slider -->
+    <section class="slider-section">
+      <h2>Success Stories</h2>
+      <div class="slider-container">
+        <div class="slider" id="slider">
+          <div class="slide">
+            <img src="https://vlsci.com/wp-content/uploads/2023/07/shutterstock_1087283084.jpg" alt="Farm field">
+            <div class="slide-caption">
+              <h3>Increased Yield by 35%</h3>
+              <p>Rajesh from Punjab improved his wheat production using our recommendations</p>
+            </div>
+          </div>
+          <div class="slide">
+            <img src="https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Happy farmer">
+            <div class="slide-caption">
+              <h3>Reduced Fertilizer Costs</h3>
+              <p>Priya from Karnataka saved ₹12,000 per acre with optimized fertilizer use</p>
+            </div>
+          </div>
+          <div class="slide">
+            <img src="https://images.unsplash.com/photo-1492496913980-501348b61469?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Organic farming">
+            <div class="slide-caption">
+              <h3>Improved Soil Health</h3>
+              <p>Organic farmer Amit from Maharashtra restored his soil fertility in 2 seasons</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slider-nav" id="slider-nav">
+        <span class="slider-dot active"></span>
+        <span class="slider-dot"></span>
+        <span class="slider-dot"></span>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Sidebar functions
+    function openSidebar() {
+      document.getElementById("sidebar").style.width = "280px";
+    }
+
+    function closeSidebar() {
+      document.getElementById("sidebar").style.width = "0";
+    }
+    
+    // Close sidebar when clicking outside
+    document.addEventListener('click', function(event) {
+      const sidebar = document.getElementById('sidebar');
+      const menuIcon = document.querySelector('.menu-icon');
+      
+      if (!sidebar.contains(event.target) && event.target !== menuIcon && !menuIcon.contains(event.target)) {
+        sidebar.style.width = "0";
+      }
+    });
+
+    // Hero Slider Functionality
+    let heroCurrentSlide = 0;
+    const heroSlides = document.querySelectorAll('.hero-slide');
+    const heroDots = document.querySelectorAll('.hero-slider-dot');
+    const totalHeroSlides = heroSlides.length;
+    const heroSlider = document.getElementById('hero-slider');
+
+    function showHeroSlide(index) {
+      if (index >= totalHeroSlides) heroCurrentSlide = 0;
+      else if (index < 0) heroCurrentSlide = totalHeroSlides - 1;
+      else heroCurrentSlide = index;
+      
+      heroSlider.style.transform = `translateX(-${heroCurrentSlide * 100}%)`;
+      
+      // Update dots
+      heroDots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === heroCurrentSlide);
+      });
+    }
+
+    // Auto slide change every 4 seconds
+    setInterval(() => {
+      showHeroSlide(heroCurrentSlide + 1);
+    }, 4000);
+
+    // Click on dots
+    heroDots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        showHeroSlide(i);
+      });
+    });
+
+    // Success Stories Slider Functionality
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.slider-dot');
+    const totalSlides = slides.length;
+    const slider = document.getElementById('slider');
+
+    function showSlide(index) {
+      if (index >= totalSlides) currentSlide = 0;
+      else if (index < 0) currentSlide = totalSlides - 1;
+      else currentSlide = index;
+      
+      slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+      
+      // Update dots
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentSlide);
+      });
+    }
+
+    // Auto slide change every 5 seconds
+    setInterval(() => {
+      showSlide(currentSlide + 1);
+    }, 5000);
+
+    // Click on dots
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        showSlide(i);
+      });
+    });
+  </script>
+</body>
+</html>
